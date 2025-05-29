@@ -57,6 +57,5 @@ def manual_send():
 
 # === 執行 Flask App ===
 if __name__ == '__main__':
-    push_daily_quote()  # 啟動時先測試推播一次（妳也可以拿掉這行）
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
