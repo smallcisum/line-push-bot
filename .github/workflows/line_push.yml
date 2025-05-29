@@ -1,0 +1,51 @@
+name: Daily LINE Push
+
+on:
+  schedule:
+    - cron: '0 4 * * *'  # 台灣中午12點（因 GitHub 用 UTC）
+  workflow_dispatch:  # 允許手動觸發
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Install Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: pip install requests
+
+    - name: Run push script
+      run: |
+        python <<EOF
+        import requests, json, random
+
+        # LINE Token from GitHub Secrets
+        token = '${{ secrets.LINE_CHANNEL_ACCESS_TOKEN }}'
+        user_id = '${{ secrets.LINE_USER_ID }}'
+
+        # 讀取金句 JSON（從妳的 bible repo 抓）
+        res = requests.get("https://raw.githubusercontent.com/smallcisum/bible/main/bible.json")
+        data = res.json()
+        quote = random.choice(data)
+        text = "\\n".join(quote) if isinstance(quote, list) else str(quote)
+
+        # 傳送到 LINE
+        headers = {
+            "Authorization": f"Bearer {token}",
+            "Content-Type": "application/json"
+        }
+        payload = {
+            "to": user_id,
+            "messages": [{"type": "text", "text": text}]
+        }
+
+        r = requests.post("https://api.line.me/v2/bot/message/push", headers=headers, json=payload)
+        print("LINE Response:", r.status_code, r.text)
+        EOF
