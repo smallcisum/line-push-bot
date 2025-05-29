@@ -9,11 +9,11 @@ import atexit # 為了在應用程式關閉時，讓排程器也能正常關閉
 # === LINE 設定 ===
 # 從環境變數讀取 LINE Bot 的 Channel Access Token
 # 在部署平台（如 Heroku）上設定這個環境變數，例如：LINE_CHANNEL_ACCESS_TOKEN
-CHANNEL_ACCESS_TOKEN = os.environ.get('e6e267f4ffc2be6d9e79e45cc15e0ab2')
+CHANNEL_ACCESS_TOKEN = os.environ.get('LINE_CHANNEL_ACCESS_TOKEN')
 
 # 從環境變數讀取 LINE 的 User ID，這是你想要推播的 LINE ID
 # 在部署平台（如 Heroku）上設定這個環境變數，例如：LINE_USER_ID
-USER_ID = os.environ.get('Ua1ee40b62de1333b9f167cb4cf5d33f7')
+USER_ID = os.environ.get('LINE_USER_ID')
 
 # 語錄來源，保持不變
 BIBLE_JSON_URL = 'https://raw.githubusercontent.com/smallcisum/bible/main/bible.json'
