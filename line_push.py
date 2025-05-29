@@ -50,14 +50,6 @@ scheduler.start()
 def index():
     return '金句推播機器人執行中！'
 
-
-@app.route('/send')
-def send_quote_now():
-    push_daily_quote()
-    return '📨 已發送一次金句給你！'
-
-
-
 # === 執行 Flask App ===
 if __name__ == '__main__':
     push_daily_quote()  # 啟動時先測試推播一次（妳也可以拿掉這行）
