@@ -1,33 +1,66 @@
-import os
 import requests
-import random
 import json
+import random
+import os
+from flask import Flask
+from apscheduler.schedulers.background import BackgroundScheduler
 
-# 從 GitHub Actions 的 secrets 取得 TOKEN 與 USER ID
-token = os.environ['LINE_CHANNEL_ACCESS_TOKEN']
-user_id = os.environ['LINE_USER_ID']
+# === LINE 設定 ===
+CHANNEL_ACCESS_TOKEN = 'e6e267f4ffc2be6d9e79e45cc15e0ab2'
+USER_ID = 'Ua1ee40b62de1333b9f167cb4cf5d33f7'
 
-# 讀取 GitHub 上的經文 json
-res = requests.get("https://raw.githubusercontent.com/smallcisum/bible/main/bible.json")
-quotes = res.json()
+# === 語錄來源 ===
+BIBLE_JSON_URL = 'https://raw.githubusercontent.com/smallcisum/bible/main/bible.json'
 
-# 隨機選一句
-quote = random.choice(quotes)
-text = '\n'.join(quote) if isinstance(quote, list) else str(quote)
+app = Flask(__name__)
 
-# 發送 LINE 訊息
-headers = {
-    "Authorization": f"Bearer {token}",
-    "Content-Type": "application/json"
-}
-payload = {
-    "to": user_id,
-    "messages": [{"type": "text", "text": text}]
-}
+# === 每日推播函數 ===
+def push_daily_quote():
+    try:
+        res = requests.get(BIBLE_JSON_URL)
+        quotes = json.loads(res.text)
+        quote = random.choice(quotes)
+        text = '\n'.join(quote) if isinstance(quote, list) else str(quote)
 
-response = requests.post("https://api.line.me/v2/bot/message/push", headers=headers, json=payload)
+        headers = {
+            "Authorization": f"Bearer {CHANNEL_ACCESS_TOKEN}",
+            "Content-Type": "application/json"
+        }
 
-# 印出結果供 GitHub Actions 檢查
-print("🔔 發送內容：", text)
-print("📬 回應狀態：", response.status_code)
-print("📦 LINE 回覆：", response.text)
+        body = {
+            "to": USER_ID,
+            "messages": [{
+                "type": "text",
+                "text": f"📖 今日金句：\n{text}"
+            }]
+        }
+
+        r = requests.post("https://api.line.me/v2/bot/message/push", headers=headers, data=json.dumps(body))
+        
+        # === Debug 輸出 ===
+        print("LINE 回應狀態碼：", r.status_code)
+        print("LINE 回應內容：", r.text)
+        print("✅ 推播成功" if r.status_code == 200 else "⚠️ 推播失敗")
+
+    except Exception as e:
+        print("🚨 發生錯誤：", e)
+
+# === 每日定時排程（中午 12:00 台北時間）===
+scheduler = BackgroundScheduler(timezone='Asia/Taipei')
+scheduler.add_job(push_daily_quote, 'cron', hour=12, minute=0)
+scheduler.start()
+
+# === 網頁路由 ===
+@app.route('/')
+def index():
+    return '💌 金句推播機器人執行中！'
+
+@app.route('/send')
+def manual_send():
+    push_daily_quote()
+    return '📨 金句發送成功！'
+
+# === 執行 Flask App ===
+if __name__ == '__main__':
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
