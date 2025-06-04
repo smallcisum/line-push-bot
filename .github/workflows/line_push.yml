@@ -2,8 +2,8 @@ name: Daily LINE Push
 
 on:
   schedule:
-    - cron: '0 4 * * *'
-  workflow_dispatch:
+    - cron: '0 4 * * *'  # 每天台灣中午12點（因 GitHub 是 UTC）
+  workflow_dispatch:     # 手動觸發用
 
 jobs:
   push:
@@ -18,11 +18,11 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Setup virtualenv & install dependencies
+      - name: Install dependencies
         run: |
-          python -m venv venv
-          source venv/bin/activate
-          pip install --upgrade pip
+          python -m pip install --upgrade pip
           pip install requests flask apscheduler
-          pip list  # 確認 flask 有裝好
-          python line_push.py
+          pip list  # 顯示所有安裝的套件，確認 flask 有被裝到
+
+      - name: Run push script
+        run: python line_push.py
