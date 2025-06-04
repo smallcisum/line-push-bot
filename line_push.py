@@ -31,19 +31,19 @@ def push_daily_quote():
             "to": USER_ID,
             "messages": [{
                 "type": "text",
-                "text": f"📖 今日金句：\n{text}"
+                "text": f"\ud83d\udcd6 今日金句：\n{text}"
             }]
         }
 
         r = requests.post("https://api.line.me/v2/bot/message/push", headers=headers, data=json.dumps(body))
-        
+
         # === Debug 輸出 ===
-        print("LINE 回應狀態碼：", r.status_code)
-        print("LINE 回應內容：", r.text)
-        print("✅ 推播成功" if r.status_code == 200 else "⚠️ 推播失敗")
+        print("LINE \u56de\u61c9\u72c0\u614b\u78bc：", r.status_code)
+        print("LINE \u56de\u61c9\u5167\u5bb9：", r.text)
+        print("\u2705 \u63a8\u64ad\u6210\u529f" if r.status_code == 200 else "\u26a0\ufe0f \u63a8\u64ad\u5931\u6557")
 
     except Exception as e:
-        print("🚨 發生錯誤：", e)
+        print("\ud83d\udea8 \u767c\u751f\u932f\u8aa4：", e)
 
 # === 每日定時排程（中午 12:00 台北時間）===
 scheduler = BackgroundScheduler(timezone='Asia/Taipei')
@@ -53,14 +53,14 @@ scheduler.start()
 # === 網頁路由 ===
 @app.route('/')
 def index():
-    return '💌 金句推播機器人執行中！'
+    return '\ud83d\udcec \u91d1\u53e5\u63a8\u64ad\u6a5f\u5668\u4eba\u57f7\u884c\u4e2d！'
 
 @app.route('/send')
 def manual_send():
     push_daily_quote()
-    return '📨 金句發送成功！'
+    return '\ud83d\udce8 \u91d1\u53e5\u767c\u9001\u6210\u529f\uff01'
 
-# === 執行 Flask App ===
+# === \u57f7\u884c Flask App ===
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
