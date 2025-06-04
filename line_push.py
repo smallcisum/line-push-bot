@@ -6,7 +6,7 @@ from flask import Flask
 from apscheduler.schedulers.background import BackgroundScheduler
 
 # === LINE 設定 ===
-CHANNEL_ACCESS_TOKEN = 'e6e267f4ffc2be6d9e79e45cc15e0ab2'
+CHANNEL_ACCESS_TOKEN = 'W/rlfDQYAdYBuBxaFfvlm60GPQNCsRG+W1G0YN9SbTZ3JNfqbPpMrSlq9Qe/Agm+zPfKdTHcQJfrDh2glPLJeiOeOOsD6tEV9GwKGscFaolf4OPGM50uLIXttiU+a1PTril1HzYLawAS1rnNStHEcgdB04t89/1O/w1cDnyilFU='
 USER_ID = 'Ua1ee40b62de1333b9f167cb4cf5d33f7'
 
 # === 語錄來源 ===
