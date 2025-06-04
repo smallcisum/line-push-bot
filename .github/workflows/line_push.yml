@@ -2,8 +2,8 @@ name: Daily LINE Push
 
 on:
   schedule:
-    - cron: '0 4 * * *'  # 每天台灣中午12點（GitHub 用 UTC）
-  workflow_dispatch:     # 手動觸發測試用
+    - cron: '0 4 * * *'
+  workflow_dispatch:
 
 jobs:
   push:
@@ -21,7 +21,10 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install requests flask apscheduler
+          python -m pip install requests
+          python -m pip install flask
+          python -m pip install apscheduler
+          python -m pip list  # <== 這行能幫妳確認 flask 有沒有裝進去
 
       - name: Run push script
         run: python line_push.py
