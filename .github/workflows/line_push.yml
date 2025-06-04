@@ -3,24 +3,23 @@ name: Daily LINE Push
 on:
   schedule:
     - cron: '0 4 * * *'  # 每天台灣中午12點（GitHub 用 UTC）
-  workflow_dispatch:     # 可手動觸發測試
+  workflow_dispatch:     # 手動觸發測試用
 
 jobs:
   push:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Setup Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.x'
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
 
-    - name: Install dependencies
-      run: pip install requests
+      - name: Install dependencies
+        run: pip install requests flask apscheduler
 
-    - name: Run line_push.py
-      run: |
-        python line_push.py
+      - name: Run line_push.py
+        run: python line_push.py
