@@ -20,7 +20,17 @@ def push_daily_quote():
         res = requests.get(BIBLE_JSON_URL)
         quotes = json.loads(res.text)
         quote = random.choice(quotes)
-        text = '\n'.join(quote) if isinstance(quote, list) else str(quote)
+
+        # 格式化輸出
+        if isinstance(quote, dict):
+            text = (
+                f"{quote.get('zh', '')}\n"
+                f"{quote.get('en', '')}\n\n"
+                f"\ud83d\udd0d {quote.get('zh_ref', '')} | {quote.get('en_ref', '')}\n"
+                f"\ud83d\udd16 \u4e3b\u984c\uff1a{quote.get('topic', '')}"
+            )
+        else:
+            text = str(quote)
 
         headers = {
             "Authorization": f"Bearer {CHANNEL_ACCESS_TOKEN}",
