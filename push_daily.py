@@ -2,8 +2,8 @@ import requests
 import json
 import random
 
-CHANNEL_ACCESS_TOKEN = '你的 token'
-USER_ID = '你的 user id'
+CHANNEL_ACCESS_TOKEN = 'NFutE++FSNU/qXNjdTz9eaAnfBGQSLMDD+W/DFg7LuCiIvzc9i0IxgMahJigyF9gzPfKdTHcQJfrDh2glPLJeiOeOOsD6tEV9GwKGscFaolDao1pmiuZVSf+nWhKJsoqLLxMjK1KxXWfenBqbyGKEAdB04t89/1O/w1cDnyilFU='
+USER_ID = 'Ua1ee40b62de1333b9f167cb4cf5d33f7'
 BIBLE_JSON_URL = 'https://raw.githubusercontent.com/smallcisum/bible/main/bible.json'
 
 def push_daily_quote():
