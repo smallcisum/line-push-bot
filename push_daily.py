@@ -8,7 +8,7 @@ CHANNEL_ACCESS_TOKEN = 'NFutE++FSNU/qXNjdTz9eaAnfBGQSLMDD+W/DFg7LuCiIvzc9i0IxgMa
 # ✅ 多人推播：把使用者 ID 放這裡
 USER_IDS = [
     'Ua1ee40b62de1333b9f167cb4cf5d33f7',  # 我
-    'U3b84345327311c77c45733ee0792e73b'          # ← 昱翰ID
+    'U5541c4ea444409050ad321ae7d0db489'          # ← 昱翰ID
 ]
 
 # === 金句資料來源 ===
