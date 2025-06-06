@@ -8,7 +8,7 @@ CHANNEL_ACCESS_TOKEN = 'NFutE++FSNU/qXNjdTz9eaAnfBGQSLMDD+W/DFg7LuCiIvzc9i0IxgMa
 # ✅ 多人推播：把使用者 ID 放這裡
 USER_IDS = [
     'Ua1ee40b62de1333b9f167cb4cf5d33f7',  # 我
-    'U5541c4ea444409050ad321ae7d0db489'          # ← 昱翰ID
+    'U5541c4ea444409050ad321ae7d0db489'  # 昱翰
 ]
 
 # === 金句資料來源 ===
@@ -17,14 +17,20 @@ BIBLE_JSON_URL = 'https://raw.githubusercontent.com/smallcisum/bible/main/bible.
 def push_daily_quote():
     try:
         res = requests.get(BIBLE_JSON_URL)
-        quotes = json.loads(res.text)
+        data = json.loads(res.text)
+
+        quotes = data["verses"]
+        blessings = data["blessings"]
+
         quote = random.choice(quotes)
+        blessing = random.choice(blessings)
 
         text = (
             f"{quote.get('zh', '')}\n"
             f"{quote.get('en', '')}\n\n"
             f"📍 {quote.get('zh_ref', '')} | {quote.get('en_ref', '')}\n"
-            f"🔖 主題：{quote.get('topic', '')}"
+            f"🔖 主題：{quote.get('topic', '')}\n\n"
+            f"💌 {blessing}"
         )
 
         headers = {
