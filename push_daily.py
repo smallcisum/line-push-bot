@@ -16,21 +16,26 @@ BIBLE_JSON_URL = 'https://raw.githubusercontent.com/smallcisum/bible/main/bible.
 
 def push_daily_quote():
     try:
+        # 取得金句與祝福與結語
         res = requests.get(BIBLE_JSON_URL)
         data = json.loads(res.text)
 
         quotes = data["verses"]
         blessings = data["blessings"]
+        closing_lines = data["closing_lines"]
 
         quote = random.choice(quotes)
         blessing = random.choice(blessings)
+        closing = random.choice(closing_lines)
 
+        # 組合文字
         text = (
             f"{quote.get('zh', '')}\n"
             f"{quote.get('en', '')}\n\n"
             f"📍 {quote.get('zh_ref', '')} | {quote.get('en_ref', '')}\n"
             f"🔖 主題：{quote.get('topic', '')}\n\n"
-            f"💌 {blessing}"
+            f"💌 {blessing}\n\n"
+            f"{closing}"
         )
 
         headers = {
