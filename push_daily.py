@@ -1,3 +1,5 @@
+from datetime import datetime
+import pytz
 import requests
 import json
 import random
@@ -16,6 +18,13 @@ BIBLE_JSON_URL = 'https://raw.githubusercontent.com/smallcisum/bible/main/bible.
 
 def push_daily_quote():
     try:
+        # 台北時區設定
+        tz = pytz.timezone('Asia/Taipei')
+        now = datetime.now(tz)
+        weekday_map = ["一", "二", "三", "四", "五", "六", "日"]
+        weekday = weekday_map[now.weekday()]
+        date_str = f"📅  {now.strftime('%Y-%m-%d')}（{weekday}） 金句"
+
         # 取得金句與祝福與結語
         res = requests.get(BIBLE_JSON_URL)
         data = json.loads(res.text)
@@ -30,6 +39,7 @@ def push_daily_quote():
 
         # 組合文字
         text = (
+            f"{date_str}\n\n"
             f"{quote.get('zh', '')}\n"
             f"{quote.get('en', '')}\n\n"
             f"📍 {quote.get('zh_ref', '')} | {quote.get('en_ref', '')}\n"
