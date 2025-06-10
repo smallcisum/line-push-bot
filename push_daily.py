@@ -1,5 +1,5 @@
 from datetime import datetime
-import pytz
+from zoneinfo import ZoneInfo
 import requests
 import json
 import random
@@ -18,12 +18,11 @@ BIBLE_JSON_URL = 'https://raw.githubusercontent.com/smallcisum/bible/main/bible.
 
 def push_daily_quote():
     try:
-        # 台北時區設定
-        tz = pytz.timezone('Asia/Taipei')
-        now = datetime.now(tz)
+        # 台北時區（ZoneInfo）
+        now = datetime.now(ZoneInfo("Asia/Taipei"))
         weekday_map = ["一", "二", "三", "四", "五", "六", "日"]
         weekday = weekday_map[now.weekday()]
-        date_str = f"📅  {now.strftime('%Y-%m-%d')}（{weekday}） 金句"
+        date_str = f"📅 {now.strftime('%Y-%m-%d')}（{weekday}） 金句"
 
         # 取得金句與祝福與結語
         res = requests.get(BIBLE_JSON_URL)
@@ -37,7 +36,7 @@ def push_daily_quote():
         blessing = random.choice(blessings)
         closing = random.choice(closing_lines)
 
-        # 組合文字
+        # 組合訊息文字
         text = (
             f"{date_str}\n\n"
             f"{quote.get('zh', '')}\n"
@@ -58,7 +57,7 @@ def push_daily_quote():
                 "to": user_id,
                 "messages": [{
                     "type": "text",
-                    "text": f"📖 今日金句：\n{text}"
+                    "text": text
                 }]
             }
 
