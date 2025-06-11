@@ -22,7 +22,7 @@ def push_daily_quote():
         now = datetime.now(ZoneInfo("Asia/Taipei"))
         weekday_map = ["一", "二", "三", "四", "五", "六", "日"]
         weekday = weekday_map[now.weekday()]
-        date_str = f"📅 {now.strftime('%Y-%m-%d')}（{weekday}） 金句"
+        date_str = f" {now.strftime('%Y-%m-%d')}（{weekday}） 金句"
 
         # 取得金句與祝福與結語
         res = requests.get(BIBLE_JSON_URL)
